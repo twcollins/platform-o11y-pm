@@ -1,37 +1,57 @@
 ---
-name: grafana-infra-o11y-pm
+name: platform-o11y-pm
 description: >
-  Product management toolkit for infrastructure observability products built on the Grafana
-  stack (Grafana, OpenTelemetry, Prometheus, Mimir, Loki, Tempo, Alloy, plus Kubernetes
-  Monitoring and Cloud Provider Observability). Use this whenever the user is doing product
-  work for an observability or monitoring product: writing a product vision or roadmap,
-  running customer discovery or synthesising user feedback, drafting a PRD or product
-  one-pager, doing competitive analysis against DataDog, New Relic, Dynatrace, Chronosphere
-  or the cloud-native tools, making pricing, packaging, licensing or tiering decisions,
-  building GTM or sales-enablement collateral, or prioritising features and tradeoffs with
+  Product management toolkit for infrastructure observability products, with two stack
+  options: the Grafana stack (Grafana, OpenTelemetry, Prometheus, Mimir, Loki, Tempo, Alloy)
+  or the Elastic Stack (Elasticsearch, Kibana, Elastic Agent, EDOT, Elastic Observability).
+  Use this whenever the user does product work for an observability or monitoring product:
+  a product vision or roadmap, customer discovery or feedback synthesis, a PRD or one-pager,
+  competitive analysis against DataDog, New Relic, Dynatrace, Chronosphere, Splunk,
+  OpenSearch, Grafana, Elastic or the cloud-native tools, pricing, packaging, licensing or
+  tiering decisions, GTM or sales-enablement collateral, or prioritising tradeoffs with
   engineering. Trigger it even when the user only says "roadmap", "discovery", "competitive
   analysis", "pricing", "PRD", "feedback synthesis" or "datasheet" in an observability,
-  monitoring or infra context, and even if they do not name Grafana explicitly.
+  monitoring or infra context, and even if they do not name Grafana or Elastic.
 ---
 
-# Grafana infra observability: product management
+# Infra observability product management (Grafana or Elastic)
 
 This skill is a working toolkit for a product manager who owns an infrastructure
-observability domain on the Grafana stack. It maps the day-to-day PM tasks (vision,
-discovery, prioritisation, competitive work, and go-to-market) onto the specific reality of
-observability products, where the buyer is technical, the data has a cost model, and the
-competition is well funded.
+observability domain on either the Grafana stack or the Elastic Stack. It maps the day-to-day
+PM tasks (vision, discovery, prioritisation, competitive work, and go-to-market) onto the
+specific reality of observability products, where the buyer is technical, the data has a
+cost model, and the competition is well funded.
 
-Before doing any task below, skim `references/domain-primer.md` if you are not already fluent
-in the stack and its competitive landscape. Good observability PM work falls apart when the
-PM cannot speak credibly about cardinality, OTel, pull versus push, or why a customer's bill
+## Step 0: choose the stack
+
+The workflows and templates are shared. The stack decides which domain knowledge, competitors,
+cost model, and positioning you use. Pick one before starting:
+
+| Stack option | Pick it when | Domain primer | GTM reference |
+|---|---|---|---|
+| A. Grafana stack | The user mentions Grafana, Prometheus, Mimir, Loki, Tempo, Alloy, LGTM, or Grafana Cloud | `references/domain-primer.md` | `references/gtm-reference.md` |
+| B. Elastic Stack | The user mentions Elastic, Elasticsearch, Kibana, ELK, Elastic Agent, Fleet, Beats, Logstash, EDOT, ES\|QL, or Elastic Cloud | `references/elastic-domain-primer.md` | `references/elastic-gtm-reference.md` |
+
+If the request does not say which stack, and earlier conversation does not settle it, ask the
+user once. If they do not mind, default to the Grafana stack and say so. If the user wants a
+comparison of the two (for example, a battlecard for Elastic versus Grafana), read both primers
+and write from the side the user's product is on.
+
+Once chosen, stay consistent. Do not mix one stack's components, query languages, or cost levers
+into the other's artifacts. "Reduce cardinality with Alloy drop rules" is a Grafana answer; the
+Elastic equivalent is something like "control mapping growth and drop fields in an ingest
+pipeline". The stack-specific notes in each workflow below flag where the two differ most.
+
+Before doing any task below, skim the chosen stack's domain primer if you are not already
+fluent in it. Good observability PM work falls apart when the PM cannot speak credibly about
+cardinality or mapping explosions, OTel, pull versus push, data tiers, or why a customer's bill
 doubled. The primer keeps that grounded.
 
 ## How to use this skill
 
 Pick the workflow that matches the request. Each one has a short method below and a matching
 template in `references/templates.md`. For competitive, pricing, and market specifics, also
-read `references/gtm-reference.md`. Keep outputs concrete and evidence-led. Avoid filler,
+read the chosen stack's GTM reference. Keep outputs concrete and evidence-led. Avoid filler,
 avoid hand-waving about "delight", and tie every claim back to a user problem or a number.
 
 | If the user wants to... | Use workflow | Template |
@@ -50,8 +70,8 @@ synthesis feeds the roadmap, the roadmap and competitive picture feed GTM.
 ## 1. Vision and roadmap
 
 Turn scattered ideas, feedback, and strategy input into a defensible direction for the
-domain (for example Kubernetes Monitoring, Cloud Provider Observability, or net-new Host
-Monitoring), then a roadmap that engineering and leadership can commit to.
+domain (for example Kubernetes monitoring, cloud provider observability, or net-new host
+monitoring), then a roadmap that engineering and leadership can commit to.
 
 Method:
 - State the domain's reason to exist in one paragraph: who it serves, the problem it removes,
@@ -65,6 +85,16 @@ Method:
 - Show the integration story explicitly. Infra observability does not live alone; it connects
   to application observability, the knowledge graph, and any natural-language assistant layer.
   Call out where this domain plugs into the wider suite.
+
+Stack notes:
+- Grafana: example outcome "any team can monitor their Kubernetes fleet in under ten minutes
+  without writing PromQL". Watch the tension between OSS projects and Grafana Cloud.
+- Elastic: the domain is one of three solutions (Search, Observability, Security) on a shared
+  platform, so frame platform asks so the other solutions also benefit. Plan for both
+  deployment worlds (Serverless or Hosted, and self-managed or air-gapped) and for the
+  installed base migrating from Beats and Logstash to Elastic Agent or EDOT. Example outcome:
+  "a team that already ships logs to Elastic gets host and Kubernetes metrics, with correlated
+  logs, in under ten minutes".
 
 Pitfalls: a vision that is really a backlog; a roadmap that ignores the cost model; treating
 self-serve and enterprise as one audience when their roadmaps diverge.
@@ -82,9 +112,14 @@ Method:
 - Interview for the job-to-be-done, not the feature. Ask what they were trying to do, what it
   cost them when it broke, and what they tried instead. Watch for the workaround; the
   workaround is the unmet need.
-- Probe the three recurring infra-o11y pains: cost and cardinality surprises, time-to-value
-  on setup, and the gap between "I have a dashboard" and "I know what is wrong". Most
-  opportunities sit in one of these.
+- Probe the three recurring infra-o11y pains: cost surprises, time-to-value on setup, and
+  the gap between "I have a dashboard" and "I know what is wrong". Most opportunities sit in
+  one of these. On Grafana, cost surprises usually mean metric cardinality. On Elastic, they
+  usually mean ingest and indexing volume, mapping explosions, shard sprawl, retention sizing,
+  or the operational cost of running the cluster.
+- On Elastic, also find out which deployment the customer runs (Serverless, Hosted,
+  self-managed) and who else shares the cluster (often the security team). Both change the
+  pain and the buyer.
 - Distinguish what users say they want from the outcome they need. They will ask for a
   setting; the job is the outcome that setting was a guess at.
 - Capture evidence verbatim and tag it by segment and pain. You will need it later to defend
@@ -123,15 +158,22 @@ Build a clear-eyed view of where this domain wins and loses, so the roadmap and 
 stand up to scrutiny. Read `references/gtm-reference.md` for the landscape detail.
 
 Method:
-- Map competitors by archetype, not just logo: all-in-one commercial suites (DataDog, New
-  Relic, Dynatrace), cost-and-scale challengers (Chronosphere, and Grafana itself on the
-  Prometheus side), cloud-native built-ins (CloudWatch, Google Cloud Operations, Azure
-  Monitor), and the open-source baseline customers can assemble themselves.
+- Map competitors by archetype, not just logo. The set depends on the stack:
+  - Grafana: all-in-one commercial suites (DataDog, New Relic, Dynatrace), cost-and-scale
+    challengers (Chronosphere, and Grafana itself on the Prometheus side), cloud-native
+    built-ins (CloudWatch, Google Cloud Operations, Azure Monitor), log players (Elastic,
+    Splunk), and the open-source baseline customers can assemble themselves.
+  - Elastic: all-in-one suites (DataDog, Dynatrace, New Relic), the log and SIEM incumbent
+    (Splunk), composable open-source stacks (Grafana LGTM and Prometheus), the fork
+    (OpenSearch and Amazon OpenSearch Service), and cloud-native built-ins.
 - For each, capture where they genuinely beat this stack, where they are weak, and how they
   price. Do not strawman them. A battlecard that oversells is worse than none.
-- Anchor differentiation on the durable angles: open and composable rather than locked in,
-  OpenTelemetry-native, control over cost and cardinality, and a single experience across
-  metrics, logs, and traces. These are positions, not slogans, so back each with proof.
+- Anchor differentiation on the chosen stack's durable angles. Grafana: open and composable
+  rather than locked in, OpenTelemetry-native, control over cost and cardinality, and a single
+  experience across metrics, logs, and traces. Elastic: search-grade analytics over all your
+  data, one platform for observability and security, OpenTelemetry-native, deploy anywhere
+  including self-managed and air-gapped, and ML and AI on your own data. These are positions,
+  not slogans, so back each with proof, and state the chosen stack's honest weak points.
 - Watch the substitution risk that matters most in infra o11y: the customer deciding the
   cloud provider's built-in monitoring is "good enough". Know exactly where it stops being
   good enough and make that the wedge.
@@ -147,13 +189,19 @@ where infra-o11y PM gets commercial.
 
 Method:
 - Pricing and packaging start from the value metric: what does the customer pay along? In this
-  space it is usually data volume (active series, ingested logs and traces, data points per
-  minute), and that choice shapes behaviour, so model it. A metric that punishes good
-  instrumentation will be hated.
+  space it is usually data volume, and that choice shapes behaviour, so model it. A metric that
+  punishes good instrumentation will be hated.
+  - Grafana: active series, ingested log and trace bytes, data points per minute.
+  - Elastic: depends on deployment. Serverless prices along ingest and retention volume, Hosted
+    along provisioned resources, self-managed by subscription tier. Packaging has two axes
+    (subscription tier and deployment model), so say how a proposal works on each.
 - Set tiers around jobs and willingness to pay, not feature counts. Be explicit about what
   pulls a self-serve user to a paid tier and what pulls a team to enterprise.
 - Pressure-test packaging against the cost surprise problem. If a customer can accidentally
-  run up a large bill, that is a packaging and product failure, not just a billing event.
+  run up a large bill, that is a packaging and product failure, not just a billing event. The
+  levers differ by stack: aggregation, adaptive telemetry, and drop rules on Grafana; ingest
+  pipeline drops, ILM and data tiers, searchable snapshots, LogsDB storage efficiency, and APM
+  sampling on Elastic.
 - For sales enablement, give the field a battlecard (per competitor) and a one-page narrative
   they can actually use: the problem, the proof, the three reasons we win, and the honest
   answer to the top objection.
@@ -170,7 +218,8 @@ See the Pricing brief, Battlecard, and Datasheet templates in `references/templa
 ## Working principles
 
 - Speak the domain credibly. If you cannot explain why a query is expensive or what an OTel
-  collector does, you will lose technical buyers. Use the primer.
+  collector does, you will lose technical buyers. Use the chosen stack's primer, and keep
+  stack terms consistent within an artifact.
 - Lead with the user problem and the evidence. Every artifact this skill produces should make
   the underlying user job obvious.
 - Respect the cost model in every decision. In observability, the data model is the business
@@ -180,9 +229,18 @@ See the Pricing brief, Battlecard, and Datasheet templates in `references/templa
 
 ## Reference files
 
+Shared:
+- `references/templates.md`: ready-to-fill templates for every workflow above, for either
+  stack.
+
+Option A, Grafana stack:
 - `references/domain-primer.md`: the Grafana stack, infra observability concepts, personas,
-  buying motion, and competitive landscape, all in PM terms. Read this first if the stack is
-  not second nature.
-- `references/templates.md`: ready-to-fill templates for every workflow above.
+  buying motion, and competitive landscape, all in PM terms.
 - `references/gtm-reference.md`: competitor detail, pricing and packaging patterns, and
   positioning angles for the go-to-market work.
+
+Option B, Elastic Stack:
+- `references/elastic-domain-primer.md`: the Elastic Stack, its cost model by deployment,
+  personas, buying motion and licensing history, and competitive landscape, in PM terms.
+- `references/elastic-gtm-reference.md`: competitor detail from Elastic's side, pricing and
+  packaging patterns, positioning angles, and honest weak points.

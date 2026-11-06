@@ -1,9 +1,17 @@
-# grafana-infra-o11y-pm
+# platform-o11y-pm
 
 A reusable [Agent Skill](https://docs.claude.com/en/docs/agents-and-tools/agent-skills) that
-turns Claude into a competent product manager for an infrastructure observability domain built
-on the Grafana stack (Grafana, OpenTelemetry, Prometheus, Mimir, Loki, Tempo, Alloy, plus
-Kubernetes Monitoring, Cloud Provider Observability, and Host Monitoring).
+turns Claude into a competent product manager for an infrastructure observability domain. It
+supports two stack options:
+
+- **Grafana stack**: Grafana, OpenTelemetry, Prometheus, Mimir, Loki, Tempo, Alloy, plus
+  Kubernetes Monitoring, Cloud Provider Observability, and Host Monitoring.
+- **Elastic Stack**: Elasticsearch, Kibana, Elastic Agent and Fleet, EDOT (Elastic
+  Distributions of OpenTelemetry), ES|QL, and the Elastic Observability solution (infrastructure,
+  Kubernetes, cloud, logs, APM, profiling).
+
+The workflows and templates are shared; each stack has its own domain primer and GTM reference.
+Claude picks the stack from context, or asks if the request does not make it clear.
 
 It packages the day-to-day PM work of the role (vision, discovery, prioritisation, competitive
 analysis, and go-to-market) into a single skill, each task grounded in the reality of
@@ -12,12 +20,14 @@ observability products where the buyer is technical and the data has a cost mode
 ## What is in here
 
 ```
-grafana-infra-o11y-pm/
+platform-o11y-pm/
 ├── SKILL.md                      # the skill: workflow router and method for each PM task
 ├── references/
-│   ├── domain-primer.md          # the Grafana stack and infra o11y in PM terms
-│   ├── templates.md              # fill-in templates for every workflow
-│   └── gtm-reference.md          # competitor detail, pricing patterns, positioning
+│   ├── templates.md              # fill-in templates for every workflow (both stacks)
+│   ├── domain-primer.md          # Grafana: the stack and infra o11y in PM terms
+│   ├── gtm-reference.md          # Grafana: competitor detail, pricing patterns, positioning
+│   ├── elastic-domain-primer.md  # Elastic: the stack and infra o11y in PM terms
+│   └── elastic-gtm-reference.md  # Elastic: competitor detail, pricing patterns, positioning
 ├── README.md
 └── LICENSE
 ```
@@ -50,11 +60,15 @@ product work. You can also invoke it directly, for example:
 - "Build a battlecard for us versus CloudWatch."
 - "Synthesise this feedback into a prioritised opportunity list for engineering."
 - "Propose a pricing and packaging model for Kubernetes Monitoring."
+- "We build on Elastic. Write a battlecard for us versus Datadog for infra and logs."
+- "Draft a roadmap for host monitoring on Elastic Observability, covering Serverless and
+  self-managed customers."
 
 ### As a reference for a person
 
-Even without Claude, `references/domain-primer.md`, `templates.md`, and `gtm-reference.md` work
-as a standalone PM playbook for the domain. The templates are copy-and-fill.
+Even without Claude, the reference files work as a standalone PM playbook for either stack:
+`templates.md` plus the Grafana pair (`domain-primer.md`, `gtm-reference.md`) or the Elastic
+pair (`elastic-domain-primer.md`, `elastic-gtm-reference.md`). The templates are copy-and-fill.
 
 ## Building the .skill package
 
@@ -62,15 +76,15 @@ To produce an installable `.skill` file from this repo, use the skill-creator pa
 (part of Anthropic's skill tooling):
 
 ```bash
-python -m scripts.package_skill path/to/grafana-infra-o11y-pm ./dist
+python -m scripts.package_skill path/to/platform-o11y-pm ./dist
 ```
 
-This zips the skill (excluding build cruft) into `grafana-infra-o11y-pm.skill`.
+This zips the skill (excluding build cruft) into `platform-o11y-pm.skill`.
 
 ## Scope and a caveat
 
 This is a working first draft, not an evaluated and benchmarked skill. The competitive and
-pricing detail in `gtm-reference.md` reflects a point-in-time view of the market. Vendors change
+pricing detail in `gtm-reference.md` and `elastic-gtm-reference.md` reflects a point-in-time view of the market. Vendors change
 pricing and features often, so verify any specific claim before putting it in customer-facing
 collateral.
 

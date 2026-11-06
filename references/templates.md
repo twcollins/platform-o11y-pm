@@ -3,6 +3,10 @@
 Fill-in templates for each workflow. Keep them lean. Delete prompts you do not need rather
 than padding. Every template should make the user problem and the evidence obvious.
 
+The templates work for both stack options. Where a prompt differs by stack, it shows both as
+"Grafana: ... / Elastic: ...". Keep only the line for the stack you chose, and take the
+specifics from that stack's primer and GTM reference.
+
 ---
 
 ## Vision brief
@@ -18,8 +22,11 @@ than padding. Every template should make the user problem and the evidence obvio
 grounded in a real pain: cost surprise, slow setup, or signal-to-insight gap.]
 
 ## Why this stack wins here
-[The durable advantage: open and composable, OTel-native, cost control, unified signals.
-Name the one or two that actually apply. Avoid listing all four by reflex.]
+[The durable advantage. Name the one or two that actually apply. Avoid listing them all
+by reflex.
+Grafana: open and composable, OTel-native, cost and cardinality control, unified signals.
+Elastic: search-grade analytics, one platform for o11y and security, OTel-native, deploy
+anywhere, ML and AI on your own data.]
 
 ## The vision (12 to 18 months)
 [An outcome, not an output. "Any team can do X in under Y without Z."]
@@ -33,7 +40,8 @@ Name the one or two that actually apply. Avoid listing all four by reflex.]
 
 ## How this connects to the wider suite
 [Integration points: application observability, knowledge graph, assistant or
-natural-language layer. Where does a user cross from this domain into the next?]
+natural-language layer (and, on Elastic, the Security solution sharing the same data).
+Where does a user cross from this domain into the next?]
 
 ## How we will know it worked
 [2 to 4 outcome measures: adoption, time-to-value, retention, cost predictability.]
@@ -70,7 +78,9 @@ dated features.
 [The one decision this discovery should inform.]
 
 ## Segment
-[Self-serve individual / growth platform team / enterprise SRE org. Be specific.]
+[Self-serve individual / growth platform team / enterprise SRE org. Be specific.
+Elastic: also note deployment (Serverless / Hosted / self-managed or air-gapped) and who
+else shares the cluster.]
 
 ## Interview questions (job-focused, not feature-focused)
 1. Walk me through the last time you [tried to do the job]. What happened?
@@ -81,7 +91,8 @@ dated features.
 
 ## What to listen for
 - The workaround (it is the unmet need)
-- Cost or cardinality surprises
+- Cost surprises (Grafana: metric cardinality / Elastic: ingest volume, mapping explosion,
+  shard sprawl, retention sizing, cluster operating effort)
 - Time-to-value friction in setup
 - The gap between "I have a dashboard" and "I know what is wrong"
 
@@ -149,7 +160,9 @@ discovery.]
 |---|---|---|---|---|
 | DataDog | All-in-one suite | [honest strength] | [honest weakness] | [model] |
 | [Cloud built-in] | Cloud-native default | [...] | [...] | [...] |
-| Chronosphere | Cost/scale challenger | [...] | [...] | [...] |
+| Grafana: Chronosphere / Elastic: Splunk | Grafana: cost/scale challenger / Elastic: log and SIEM incumbent | [...] | [...] | [...] |
+| Grafana: Elastic or Splunk / Elastic: Grafana LGTM | Grafana: log players / Elastic: composable OSS stack | [...] | [...] | [...] |
+| Elastic only: OpenSearch | The fork / AWS default | [...] | [...] | [...] |
 
 ## The substitution risk to watch
 [Usually "the cloud built-in is good enough". State exactly where it stops being good
@@ -169,8 +182,11 @@ enough. That boundary is the wedge.]
 # Pricing and packaging: [domain/product]
 
 ## Value metric
-[What the customer pays along. Usually data volume: active series, ingested bytes, DPM.
-State why this metric matches value and how it affects behaviour.]
+[What the customer pays along. State why this metric matches value and how it affects
+behaviour.
+Grafana: active series, ingested bytes, DPM.
+Elastic: ingest and retained GB (Serverless), provisioned resources (Hosted), subscription
+tier (self-managed). Say which deployments this proposal covers.]
 
 ## Tiers
 | Tier | Job it serves | What unlocks the upgrade | Rough willingness to pay |
@@ -180,8 +196,11 @@ State why this metric matches value and how it affects behaviour.]
 | Enterprise | governance, scale, support, security | [...] | [...] |
 
 ## Cost-surprise guardrails
-[How a customer avoids accidental bill shock: aggregation, sampling, drop rules, tiered
-retention, alerts on spend. If there is no answer here, the packaging is not done.]
+[How a customer avoids accidental bill shock. If there is no answer here, the packaging
+is not done.
+Grafana: aggregation, adaptive sampling, drop rules, tiered retention, alerts on spend.
+Elastic: ingest pipeline drops, ILM and data tiers, searchable snapshots and frozen tier,
+LogsDB storage efficiency, APM sampling, spend alerts on Serverless.]
 
 ## Risks
 [Where this pricing punishes good behaviour or invites gaming, and the mitigation.]
